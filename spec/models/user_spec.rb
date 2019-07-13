@@ -69,7 +69,7 @@ describe User, "#credit_cards" do
   subject     { user.credit_cards }
 
   context "when user is associated with credit_cards" do
-    let!(:credit_card)  { create :credit_card, user: user }
+    let!(:credit_card)  { create :credit_card, wallet: user.wallet }
 
     it("returns a collection of credit_cards")      { is_expected.to all be_a CreditCard }
     it("returns credit_cards associated with user") { is_expected.to eq [ credit_card ] }

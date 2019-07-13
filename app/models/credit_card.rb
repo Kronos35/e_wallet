@@ -9,9 +9,9 @@ class CreditCard < ApplicationRecord
 
   # VALIDATIONS
   # --------------------------------
-  def self.NETWORKS(); %w(visa mastercard american_express);  end
+  NETWORKS = %w(visa mastercard american_express)
   
-  validates :network, presence: true, inclusion: { in: CreditCard.NETWORKS, message: "is not supported" }
+  validates :network, presence: true, inclusion: { in: NETWORKS, message: "is not supported" }
   validates :card_number, presence: true
   validates :expiration_date, presence: true, format: { with: expire_date_regex }
   validates_uniqueness_of :card_number

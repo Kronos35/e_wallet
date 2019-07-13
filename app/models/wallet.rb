@@ -3,5 +3,17 @@ class Wallet < ApplicationRecord
     Wallet.new(user: user)
   end
 
-  belongs_to :user
+  # ASSOCIATIONS
+  # ------------------------------
+  
+  belongs_to  :user
+  has_many    :credit_cards
+
+  # VALIDATIONS
+  # ------------------------------
+
+  CURRENCIES = %w(mxn usd aud eur)
+
+  validates :currency_type, presence: true, inclusion: { in: CURRENCIES, message: "is not supported" }
+
 end

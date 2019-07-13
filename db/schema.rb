@@ -40,7 +40,8 @@ ActiveRecord::Schema.define(version: 2019_07_11_012827) do
 
   create_table "wallets", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "balance", default: 0, null: false
+    t.float "balance", default: 0.0, null: false
+    t.string "currency_type", default: "mxn", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_wallets_on_user_id"

@@ -13,7 +13,7 @@ class User < ApplicationRecord
   # --------------------------
   
   has_one :wallet
-  has_many :credit_cards
+  has_many :credit_cards, through: :wallet
   
   def wallet
     super.present? ? super : Wallet.build_default(self)

@@ -16,10 +16,13 @@ ActiveRecord::Schema.define(version: 2019_07_11_012827) do
   enable_extension "plpgsql"
 
   create_table "credit_cards", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "wallet_id"
+    t.string "network"
+    t.string "card_number"
+    t.string "expiration_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_credit_cards_on_user_id"
+    t.index ["wallet_id"], name: "index_credit_cards_on_wallet_id"
   end
 
   create_table "users", force: :cascade do |t|

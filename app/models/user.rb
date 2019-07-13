@@ -24,6 +24,7 @@ class User < ApplicationRecord
   
   delegate :balance, to: :wallet
   delegate :balance=, to: :wallet
+  delegate :can?, to: :ability
 
   # CALLBACKS
   # --------------------------
@@ -33,4 +34,9 @@ class User < ApplicationRecord
   def save_wallet
     wallet.save
   end
+
+  def ability
+    Ability.new self
+  end
+
 end

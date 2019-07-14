@@ -21,3 +21,13 @@ describe Wallet do
     end
   end
 end
+
+describe Wallet, "#exchange_balance" do
+  let!(:wallet)  { create :wallet, balance: 200.50 }
+
+  context "when converting from usd to mxn" do
+    subject     { wallet.exchange(:mxn) }
+    it("requests exchange rate")                  { expect{ subject }.to change{ wallet.reload.balance } }
+    it("requests correctly converts MXN to USD")  { expect{ subject }.to change{ wallet.currency_type }.from('usd').to('mxn') }
+  end
+end

@@ -22,12 +22,55 @@ describe Wallet do
   end
 end
 
-describe Wallet, "#exchange_balance" do
-  let!(:wallet)  { create :wallet, balance: 200.50 }
+context Wallet, "#transaction_records" do
+  let!(:wallet) { create :wallet }
+  subject       { wallet.transaction_records }
+  
+  context "when associated with transaction_records" do
+    let!(:transaction_record) { create :transaction_record, wallet: wallet }
+    
+    it "returns an array of transaction_records" do
+      is_expected.to be_present
+      is_expected.to all be_a TransactionRecord
+      is_expected.to eq [transaction_record]
+    end
+  end
 
-  context "when converting from usd to mxn" do
-    subject     { wallet.exchange(:mxn) }
-    it("requests exchange rate")                  { expect{ subject }.to change{ wallet.reload.balance } }
-    it("requests correctly converts MXN to USD")  { expect{ subject }.to change{ wallet.currency_type }.from('usd').to('mxn') }
+  context "when not associated with transaction_records" do
+    before                        { expect(TransactionRecord.count).to eq 0 }
+    it("returns an empty array")  { is_expected.to eq [] }
+  end
+end
+
+describe Wallet, "#fund" do
+  let(:wallet)      { create :wallet, balance: 200.50 }
+  let(:credit_card) { create :credit_card, :visa, wallet: wallet }
+  subject           { wallet.fund(20.50, credit_card.card_number) }
+
+  context "when card has sufficient funds" do
+    before                                                { allow_any_instance_of(CreditCard).to receive(:has_funds?).and_return(true) }
+    it("increases the wallet's balance")                  { expect{ subject }.to change{ wallet.balance }.by(20.50) }
+    it("adds an Item to the transaction history")         { expect{ subject }.to change{ wallet.transaction_records.count } }
+    it("makes a request to get the money from the card")  
+  end
+
+  context "when card doesn't have sufficient funds" do
+    before                                                { allow_any_instance_of(CreditCard).to receive(:has_funds?).and_return(false) }
+    it("doesn't increase the wallet's balance")           { expect{ subject }.not_to change{ wallet.balance } }
+    it("doesn't add an Item to the transaction history")  { expect{ subject }.not_to change{ wallet.transaction_records.count } }
+    it("makes a request to get the money from the card")
+  end
+end
+
+describe Wallet, "#transfer" do
+  context "when a user transfers money to another user's wallet" do
+    it("increases reciving wallet's balance")  { expect{ subject }.to change{ reed_richards.balance }.by(20.50) }
+    it("decreases sending wallet's balance")   { expect{ subject }.to change{ peter_parker.balance }.by(-20.50) }
+  end
+
+  context "when a user transfers money to its card" do
+    it("decreases reciving wallet's balance")    { expect{ subject }.to change{ peter_parker.balance }.by(-20) }
+    it("makes a transfer through the internet")
+    it("adds an Item to the transaction history")
   end
 end

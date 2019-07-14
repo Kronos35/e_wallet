@@ -24,4 +24,7 @@ class CreditCard < ApplicationRecord
   
   set_askers %i(visa mastercard american_express)
   
+  def has_funds?(amount)
+    true
+  end  
 end

@@ -25,9 +25,8 @@ class Wallet < ApplicationRecord
   # CALLBACKS
   # ------------------------------
   
-  def audit(method_name, amount)
-    record = transaction_records.new
-    record.type = method_name
+  def audit(m_name, amount)
+    transaction_records.create(type: m_name, amount: amount)
   end
 
   # METHODS
@@ -38,6 +37,23 @@ class Wallet < ApplicationRecord
     
     if card.has_funds?(amount)
       update_attributes balance: (balance + amount)
+      audit(__method__, amount)
     end
+  end
+
+  def receive(amount)
+    update_attributes balance: (balance + amount)
+  end
+
+  def transfer(amount, receiver)
+    if has_funds?(amount)
+      receiver.receive amount
+      update_attributes balance: (balance - amount)
+      audit(__method__, amount)
+    end
+  end
+
+  def has_funds?(amount = 0)
+    amount > 0 && balance > 0 && balance > amount
   end
 end

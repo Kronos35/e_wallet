@@ -51,7 +51,7 @@ describe Wallet, "#fund" do
     before                                                { allow_any_instance_of(CreditCard).to receive(:has_funds?).and_return(true) }
     it("increases the wallet's balance")                  { expect{ subject }.to change{ wallet.balance }.by(20.50) }
     it("adds an Item to the transaction history")         { expect{ subject }.to change{ wallet.transaction_records.count } }
-    it("makes a request to get the money from the card")  
+    it("makes a request to get the money from the card")
   end
 
   context "when card doesn't have sufficient funds" do
@@ -63,14 +63,25 @@ describe Wallet, "#fund" do
 end
 
 describe Wallet, "#transfer" do
+	let(:sender)	{ create(:tony_stark, balance: 200.50).wallet }
+	subject 			{ sender.transfer 20.50, receiver }
+
   context "when a user transfers money to another user's wallet" do
-    it("increases reciving wallet's balance")  { expect{ subject }.to change{ reed_richards.balance }.by(20.50) }
-    it("decreases sending wallet's balance")   { expect{ subject }.to change{ peter_parker.balance }.by(-20.50) }
+  	context "while having sufficient funds" do
+	  	let(:receiver)	{ create(:peter_parker).wallet }
+	    it_behaves_like :successful_transfer, 20.50, true
+	  end
+
+	  context "while having insufficient funds" do
+	  	before 					{ sender.update_attributes balance: 0.0 }
+	  	let(:receiver)	{ create(:peter_parker).wallet }
+	  	it_behaves_like :successful_transfer, 20.50, false
+	  end
   end
 
-  context "when a user transfers money to its card" do
-    it("decreases reciving wallet's balance")    { expect{ subject }.to change{ peter_parker.balance }.by(-20) }
-    it("makes a transfer through the internet")
-    it("adds an Item to the transaction history")
+  context "when transfering an amount of 0.0 to a wallet" do
+  	let(:receiver)	{ create(:peter_parker).wallet }
+  	subject 				{ sender.transfer 0.0, receiver }
+    it_behaves_like :successful_transfer, 20.50, false
   end
 end

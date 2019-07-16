@@ -1,5 +1,19 @@
 require 'rails_helper'
 
-RSpec.describe TransactionRecord, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe TransactionRecord do
+	subject { create :transaction }
+  context "when valid" do
+  end
+
+  context "when invalid" do
+  end
+end
+
+
+describe TransactionRecord, "#description" do
+	%w(transfer fund withdrawal).each do |type|
+		context "when type = #{type}" do
+			it("assembles correct description message")
+		end
+	end
 end

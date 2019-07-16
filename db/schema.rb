@@ -17,9 +17,12 @@ ActiveRecord::Schema.define(version: 2019_07_14_224936) do
 
   create_table "credit_cards", force: :cascade do |t|
     t.bigint "wallet_id"
-    t.string "network"
     t.string "card_number"
-    t.string "expiration_date"
+    t.string "encrypted_card_number"
+    t.string "encrypted_card_number_iv"
+    t.string "brand"
+    t.integer "year"
+    t.integer "month"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["wallet_id"], name: "index_credit_cards_on_wallet_id"
@@ -50,7 +53,7 @@ ActiveRecord::Schema.define(version: 2019_07_14_224936) do
 
   create_table "wallets", force: :cascade do |t|
     t.bigint "user_id"
-    t.float "balance", default: 0.0, null: false
+    t.integer "balance", default: 0, null: false
     t.string "currency_type", default: "usd", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -2,53 +2,60 @@ require 'rails_helper'
 
 describe CreditCard do
   context "when valid" do
-    subject                   { build :credit_card }
-    before                    { is_expected.to be_valid }
-    it("has network")         { expect(subject.network).to be_present }
-    it("has Card number")     { expect(subject.card_number).to be_present }
-    it("has expiration date") { expect(subject.expiration_date).to be_present }
-
-    %i(visa mastercard american_express).each do |network|
-      context "when network = #{network}" do
-        subject         { build :credit_card, network }
-        it("is valid")  { is_expected.to be_valid }
-      end
-    end
+    subject                       { build :credit_card }
+    before                        { is_expected.to be_valid }
+    it("has year")                { expect(subject.year).to be_present }
+    it("has month")               { expect(subject.month).to be_present }
+    it("has brand")               { expect(subject.brand).to be_present }
+    it("has Card number")         { expect(subject.card_number).to be_present }
   end
 
+  %i(visa mastercard american_express).each do |network|
+    context "when network = #{network}" do
+      subject         { build :credit_card, network }
+      it("is valid")  { is_expected.to be_valid }
+    end
+  end
+  
   context "when invalid" do
     context "with blank attributes" do 
       subject                                           { CreditCard.new }
       before                                            { is_expected.to be_invalid }
       it("has Wallet 'must exist error'")               { expect(subject.errors[:wallet]).to include "must exist" }
       it("has Card number 'can't be blank' error")      { expect(subject.errors[:card_number]).to include "can't be blank" }
-      it("has Expiration date 'can't be blank' error")  { expect(subject.errors[:expiration_date]).to include "can't be blank" }
+      it("has year 'can't be blank' error")             { expect(subject.errors[:year]).to include "can't be blank" }
+      it("has month 'can't be blank' error")            { expect(subject.errors[:month]).to include "can't be blank" }
     end
 
     context "with invalid attributes" do 
-      %w(visa mastercard american_express).each do |network|
-        context "when network = #{network}" do
-          subject                                       { build(:invalid_card, :invalid_attribs, network: 'visa') }
+      %w(visa mastercard american_express).each do |brand|
+        context "when brand = #{brand}" do
+          subject                                       { build(:invalid_card, :invalid_attribs, brand: 'visa') }
           before                                        { is_expected.to be_invalid }
+					it("has year 'is invalid' error")             { expect(subject.errors[:year]).to include "must be less than 9999" }
+          it("has month 'is invalid' error")            { expect(subject.errors[:month]).to include "must be less than 12" }
           it("has Card number 'is invalid' error")      { expect(subject.errors[:card_number]).to include "is invalid" }
-          it("has Expiration date 'is invalid' error")  { expect(subject.errors[:expiration_date]).to include "is invalid" }
         end
       end
 
-      %w(discover unionpay jcb maestro).each do |network|
-        context "when network = #{network}" do
-          subject                                       { build :credit_card, network: network }
+      %w(discover unionpay jcb maestro).each do |brand|
+        context "when brand = #{brand}" do
+          subject                                       { build :credit_card, brand: brand }
           before                                        { is_expected.to be_invalid }
-          it("has network 'is not suported' error")     { expect(subject.errors[:network]).to include "is not supported" }
+          it("has brand 'is not suported' error")       { expect(subject.errors[:brand]).to include "is not supported" }
         end
       end
     end
 
     context "with duplicated card_number" do
-      before  { create :credit_card }
-      subject { build :credit_card }
-      before  { is_expected.to be_invalid }
-      it("has Card number 'has already been taken' error")  { expect(subject.errors[:card_number]).to include "has already been taken" }
+      let!(:orginal_card) { create :credit_card }
+      subject 						{ build :credit_card }
+      
+      it("has Card number 'has already been taken' error") do
+      	debugger
+        is_expected.to be_invalid 
+        expect(subject.errors[:card_number]).to include "has already been taken"
+      end
     end
   end
 end

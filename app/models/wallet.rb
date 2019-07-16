@@ -32,8 +32,8 @@ class Wallet < ApplicationRecord
   # METHODS
   # ------------------------------
 
-  def fund(amount, card_number)
-    card = credit_cards.find_by card_number: card_number
+  def fund(amount, card)
+    card = card
     
     if card.has_funds?(amount)
       update_attributes balance: (balance + amount)

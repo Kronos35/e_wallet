@@ -32,7 +32,7 @@ describe CreditCard do
         context "when brand = #{brand}" do
           subject                                       { build(:invalid_card, :invalid_attribs, brand: 'visa') }
           before                                        { is_expected.to be_invalid }
-					it("has year 'is invalid' error")             { expect(subject.errors[:year]).to include "must be less than 9999" }
+          it("has year 'is invalid' error")             { expect(subject.errors[:year]).to include "must be less than 9999" }
           it("has month 'is invalid' error")            { expect(subject.errors[:month]).to include "must be less than 12" }
           it("has Card number 'is invalid' error")      { expect(subject.errors[:card_number]).to include "is invalid" }
         end
@@ -44,17 +44,6 @@ describe CreditCard do
           before                                        { is_expected.to be_invalid }
           it("has brand 'is not suported' error")       { expect(subject.errors[:brand]).to include "is not supported" }
         end
-      end
-    end
-
-    context "with duplicated card_number" do
-      let!(:orginal_card) { create :credit_card }
-      subject 						{ build :credit_card }
-      
-      it("has Card number 'has already been taken' error") do
-      	debugger
-        is_expected.to be_invalid 
-        expect(subject.errors[:card_number]).to include "has already been taken"
       end
     end
   end

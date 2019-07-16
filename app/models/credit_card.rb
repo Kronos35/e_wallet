@@ -17,7 +17,6 @@ class CreditCard < ApplicationRecord
   validates :month, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 12 } 
   validates :brand, presence: true, inclusion: { in: BRANDS, message: "is not supported" }
   validates :card_number, presence: true
-  validates_uniqueness_of :card_number
   validates_format_of :card_number, with: visa_regex, if: :visa?
   validates_format_of :card_number, with: mastercard_regex, if: :mastercard?
   validates_format_of :card_number, with: amex_regex, if: :american_express?
@@ -29,5 +28,5 @@ class CreditCard < ApplicationRecord
 
   def has_funds?(amount)
     true
-  end  
+  end
 end

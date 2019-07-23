@@ -31,3 +31,9 @@
 
 en:
   hello: "Hello world"
+
+  transfer_records:
+    descriptions:
+      fund: "Wallet funded"
+      transfer: "Money transfer to another account"
+      withdrawal: "A withdrawal was carried"

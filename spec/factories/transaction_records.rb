@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :transaction_record do
-    type        { "Transfer" }
-    description { "Money transfer" }
+    type        { "transfer" }
+    amount      { "300" }
     association :wallet, factory: :wallet
   end
 end

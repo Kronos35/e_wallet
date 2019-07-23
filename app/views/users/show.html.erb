@@ -1,0 +1,7 @@
+<h1><%= @user.name %></h1>
+<b><%= @user.email %></b>
+<% if can? :read, @user.wallet %>
+  <p class="balance">
+    Balance: <b> <%= @user.balance %> </b>
+  </p>
+<% end %>

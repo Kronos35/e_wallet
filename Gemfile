@@ -17,6 +17,7 @@ gem 'cancancan'
 gem 'activemerchant'
 gem 'figaro'
 gem 'attr_encrypted', '~> 3.1.0'
+gem 'stripe'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

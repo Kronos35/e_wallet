@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_14_224936) do
+ActiveRecord::Schema.define(version: 2019_07_20_050549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,12 @@ ActiveRecord::Schema.define(version: 2019_07_14_224936) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["wallet_id"], name: "index_credit_cards_on_wallet_id"
+  end
+
+  create_table "general_accounts", force: :cascade do |t|
+    t.integer "balance", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "transaction_records", force: :cascade do |t|

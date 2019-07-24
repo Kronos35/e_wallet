@@ -18,16 +18,13 @@ gem 'activemerchant'
 gem 'figaro'
 gem 'attr_encrypted', '~> 3.1.0'
 gem 'stripe'
+gem 'doorkeeper'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'capybara'
-  # FIXME: Force bundler to use the beta version of the hashdiff gem
-  #        `hashdiff` is a dependency of the `webmock` gem. Feel free to remove
-  #        the following line from this Gemfile as soon as hashdiff 1.0.0 is
-  #        officially realized.
   gem 'hashdiff', '>= 1.0.0.beta1' 
   gem 'webmock'
 end

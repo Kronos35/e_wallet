@@ -1,0 +1,9 @@
+
+<%= form_for @credit_card, url: path, method: url_method do |f| %>
+  Card Numer: <%= f.number_field :card_number %><br />
+  Year: <%= f.number_field :year %><br />
+  Month: <%= f.number_field :month %><br />
+  brand: <%= f.select(:brand, %w(american_express mastercard visa), {}) %>
+  <br>
+  <%= f.submit %>
+<% end %>

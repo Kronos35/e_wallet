@@ -1,0 +1,6 @@
+<% if can? :read, wallet %>
+  <p class="wallet">
+    Balance: <b id="balance"> <%= wallet.balance %> </b>
+    Wallet id: <b id="id" > <%= wallet.id %> </b>
+  </p>
+<% end %>

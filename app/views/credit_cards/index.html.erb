@@ -1,0 +1,18 @@
+<h1>CreditCards#index</h1>
+<%= link_to("Add credit card", new_credit_card_path) %>
+<table id="credit_cards">
+  <thead>
+    <tr>
+      <th>Card Number</th>
+      <th>Expiration Date</th>
+      <th>Brand</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% cache ["credit_cards", @credit_cards.map(&:id), (@credit_cards.maximum(:updated_at).strftime('%Y%m%d%H%M%S%6N'))] do %>
+      <%= render partial: "credit_card_summary", collection: @credit_cards, as: :credit_card %>
+    <% end %>
+  </tbody>
+</table>

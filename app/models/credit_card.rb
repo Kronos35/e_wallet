@@ -11,12 +11,15 @@ class CreditCard < ApplicationRecord
 
   # VALIDATIONS
   # --------------------------------
-  BRANDS = %w(visa mastercard american_express)
+
+  def self.brands
+    %w(visa mastercard american_express)
+  end
   
   validates :year,  presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 9999 } 
   validates :month, presence: true, numericality: { only_integer: true, greater_than: 0, less_than: 12 } 
-  validates :brand, presence: true, inclusion: { in: BRANDS, message: "is not supported" }
-  validates :card_number, presence: true
+  validates :brand, presence: true, inclusion: { in: CreditCard.brands, message: "is not supported" }
+  validates :card_number, presence: true, uniqueness: true
   validates_format_of :card_number, with: visa_regex, if: :visa?
   validates_format_of :card_number, with: mastercard_regex, if: :mastercard?
   validates_format_of :card_number, with: amex_regex, if: :american_express?

@@ -1,0 +1,18 @@
+<% cache credit_card do %>
+<tr id="<%= credit_card.id %>">
+  <td>
+    <%= credit_card.card_number %>
+  </td>
+  <td>
+    <%= "#{credit_card.month}/#{credit_card.year}" %>
+  </td>
+  <td>
+    <%= credit_card.brand %>
+  </td>
+  <td>
+    <%= link_to("Edit", edit_credit_card_path(credit_card)) %>
+    /
+    <%= link_to 'Delete',  credit_card,  method: :delete, data: { confirm: 'Are you sure?' } %>
+  </td>
+</tr>
+<% end %>

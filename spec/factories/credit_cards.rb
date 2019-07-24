@@ -4,6 +4,7 @@ FactoryBot.define do
     card_number     { '4436059929117986' }
     year            { Time.now.year + 3 }
     month           { Time.now.month }
+    cvv             { 123 }
     association :wallet, factory: :wallet
 
     trait :visa do
@@ -30,6 +31,7 @@ FactoryBot.define do
       association     :wallet, factory: :wallet
       year            { 30000 }
       month           { 13 }
+      cvv             { 6589 }
     end
   end
 end

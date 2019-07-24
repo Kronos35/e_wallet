@@ -5,6 +5,9 @@ class CreateCreditCards < ActiveRecord::Migration[5.2]
       t.string      :card_number
       t.string      :encrypted_card_number
       t.string      :encrypted_card_number_iv
+      t.string      :cvv
+      t.string      :encrypted_cvv
+      t.string      :encrypted_cvv_iv
       t.string      :brand
       t.integer     :year
       t.integer     :month

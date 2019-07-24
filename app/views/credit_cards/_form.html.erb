@@ -1,9 +1,23 @@
 
 <%= form_for @credit_card, url: path, method: url_method do |f| %>
-  Card Numer: <%= f.number_field :card_number %><br />
-  Year: <%= f.number_field :year %><br />
-  Month: <%= f.number_field :month %><br />
-  brand: <%= f.select(:brand, %w(american_express mastercard visa), {}) %>
+<p>
+  Card Numer: <%= f.number_field :card_number %>
   <br>
+  <%= @credit_card.errors[:card_number].join(', ')  unless @credit_card.errors.empty? %> 
+</p>
+<p>
+  Year: <%= f.number_field :year %>
+  <br>
+  <%= @credit_card.errors[:year].join(', ')  unless @credit_card.errors.empty? %> 
+</p>
+<p>
+  Month: <%= f.number_field :month %>
+  <br>
+  <%= @credit_card.errors[:month].join(', ')  unless @credit_card.errors.empty? %> 
+</p>
+<p>
+  brand: <%= f.select(:brand, %w(american_express mastercard visa), {}) %>
+  <%= @credit_card.errors[:brand].join(', ')  unless @credit_card.errors.empty? %>
+</p>
   <%= f.submit %>
 <% end %>

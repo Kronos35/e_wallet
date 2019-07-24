@@ -8,6 +8,7 @@ describe CreditCard do
     it("has month")               { expect(subject.month).to be_present }
     it("has brand")               { expect(subject.brand).to be_present }
     it("has Card number")         { expect(subject.card_number).to be_present }
+    it("has CVV")                 { expect(subject.cvv).to be_present }
   end
 
   %i(visa mastercard american_express).each do |network|
@@ -25,6 +26,7 @@ describe CreditCard do
       it("has Card number 'can't be blank' error")      { expect(subject.errors[:card_number]).to include "can't be blank" }
       it("has year 'can't be blank' error")             { expect(subject.errors[:year]).to include "can't be blank" }
       it("has month 'can't be blank' error")            { expect(subject.errors[:month]).to include "can't be blank" }
+      it("has cvv 'can't be blank' error")              { expect(subject.errors[:cvv]).to include "can't be blank" }
     end
 
     context "with invalid attributes" do 
@@ -35,6 +37,7 @@ describe CreditCard do
           it("has year 'is invalid' error")             { expect(subject.errors[:year]).to include "must be less than 9999" }
           it("has month 'is invalid' error")            { expect(subject.errors[:month]).to include "must be less than 12" }
           it("has Card number 'is invalid' error")      { expect(subject.errors[:card_number]).to include "is invalid" }
+          it("has cvv 'is too long' error")             { expect(subject.errors[:cvv]).to include "is too long (maximum is 3 characters)" }
         end
       end
 

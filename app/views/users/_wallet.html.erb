@@ -1,4 +1,7 @@
 <% if can? :read, wallet %>
+  <p>
+    <%= link_to("My Credit Cards", credit_cards_path) %>
+  </p>
   <p class="wallet">
     Balance: <b id="balance"> <%= wallet.balance %> </b>
     Wallet id: <b id="id" > <%= wallet.id %> </b>

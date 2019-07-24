@@ -1,7 +1,9 @@
 class CreditCardsController < ApplicationController
-  respond_to :html, :json
-  after_action :respond_to_index, only: %i(create update destroy)
   load_and_authorize_resource
+  
+  respond_to    :html, :json
+  before_action :find_current_credit_card, only: %i(edit update destroy)
+  
   include CreditCardsHelper
 
   def index
@@ -13,22 +15,26 @@ class CreditCardsController < ApplicationController
   end
 
   def edit
-    @credit_card = current_credit_card
   end
 
   def create
     @credit_card = credit_cards.new(card_attrs)
-    @credit_card.save
-    respond_with(@credit_card, location: credit_cards_path)
+    if @credit_card.save
+      respond_with(@credit_card, location: credit_cards_path)
+    else
+      respond_with(@credit_card, status: :bad_request)
+    end
   end
 
   def update
-    @credit_card = current_credit_card.update_attributes(card_attrs)
-    respond_with(@credit_card, location: credit_cards_path)
+    if @credit_card.update_attributes(card_attrs)
+      respond_with(@credit_card, location: credit_cards_path)
+    else
+      respond_with(@credit_card, status: :bad_request)
+    end
   end
 
   def destroy
-    @credit_card = current_credit_card
     @credit_card.destroy
     respond_with(@credit_card, location: credit_cards_path)
   end
@@ -38,11 +44,7 @@ class CreditCardsController < ApplicationController
   delegate :wallet, to: :current_user
   delegate :credit_cards, to: :wallet
 
-  def respond_to_index
-    
-  end
-
-  def current_credit_card
-    credit_cards.find(params[:id])
+  def find_current_credit_card
+    @credit_card = credit_cards.find(params[:id])
   end
 end

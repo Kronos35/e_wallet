@@ -5,16 +5,25 @@
   <br>
   <%= @credit_card.errors[:card_number].join(', ')  unless @credit_card.errors.empty? %> 
 </p>
+
 <p>
   Year: <%= f.number_field :year %>
   <br>
   <%= @credit_card.errors[:year].join(', ')  unless @credit_card.errors.empty? %> 
 </p>
+
 <p>
   Month: <%= f.number_field :month %>
   <br>
   <%= @credit_card.errors[:month].join(', ')  unless @credit_card.errors.empty? %> 
 </p>
+
+<p>
+  CVV: <%= f.number_field :cvv %>
+  <br>
+  <%= @credit_card.errors[:cvv].join(', ')  unless @credit_card.errors.empty? %> 
+</p>
+
 <p>
   brand: <%= f.select(:brand, %w(american_express mastercard visa), {}) %>
   <%= @credit_card.errors[:brand].join(', ')  unless @credit_card.errors.empty? %>

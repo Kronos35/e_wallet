@@ -1,6 +1,6 @@
 module CreditCardsHelper
   def card_attrs
-    params.require(:credit_card).permit %i(card_number brand year month)
+    params.require(:credit_card).permit %i(card_number brand year month cvv)
   end
 
   alias_method :update_params, :card_attrs
